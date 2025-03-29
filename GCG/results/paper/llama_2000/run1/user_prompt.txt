@@ -1,0 +1,44 @@
+Write a review for the following paper.
+
+Abstract: Several deep learning models have been proposed for question answering. However, due to their single-pass nature, they have no way to recover from local maxima corresponding to incorrect answers. To address this problem, we introduce the Dynamic Coattention Network (DCN) for question answering. The DCN first fuses co-dependent representations of the question and the document in order to focus on relevant parts of both. Then a dynamic pointing decoder iterates over potential answer spans. This iterative procedure enables the model to recover from initial local maxima corresponding to incorrect answers. On the Stanford question answering dataset, a single DCN model improves the previous state of the art from 71.0% F1 to 75.9%, while a DCN ensemble obtains 80.4% F1.
+
+1 INTRODUCTION: Question answering (QA) is a crucial task in natural language processing that requires both natural language understanding and world knowledge. Previous QA datasets tend to be high in quality due to human annotation, but small in size (Berant et al., 2014; Richardson et al., 2013). Hence, they did not allow for training data-intensive, expressive models such as deep neural networks.
+To address this problem, researchers have developed large-scale datasets through semi-automated techniques (Hermann et al., 2015; Hill et al., 2015). Compared to their smaller, hand-annotated counterparts, these QA datasets allow the training of more expressive models. However, it has been shown that they differ from more natural, human annotated datasets in the types of reasoning required to answer the questions (Chen et al., 2016).
+Recently, Rajpurkar et al. (2016) released the Stanford Question Answering dataset (SQuAD), which is orders of magnitude larger than all previous hand-annotated datasets and has a variety of qualities that culminate in a natural QA task. SQuAD has the desirable quality that answers are spans in a reference document. This constrains answers to the space of all possible spans. However, Rajpurkar et al. (2016) show that the dataset retains a diverse set of answers and requires different forms of logical reasoning, including multi-sentence reasoning.
+We introduce the Dynamic Coattention Network (DCN), illustrated in Fig. 1, an end-to-end neural network for question answering. The model consists of a coattentive encoder that captures the interactions between the question and the document, as well as a dynamic pointing decoder that alternates between estimating the start and end of the answer span. Our single model obtains an F1 of 75.9% compared to the best published result of 71.0% (Yu et al., 2016). In addition, our ensemble model obtains an F1 of 80.4% compared to the second best result of 78.1% on the official SQuAD leaderboard.1
+∗Equal contribution 1As of Nov. 3 2016. See https://rajpurkar.github.io/SQuAD-explorer/ for latest results.
+ar X
+iv :1
+61 1.
+01 60
+4v 1
+[ cs
+.C L
+] 5
+N ov
+2 01
+6
+
+2 DYNAMIC COATTENTION NETWORKS: Figure 1 illustrates an overview of the DCN. We first describe the encoders for the document and the question, followed by the coattention mechanism and the dynamic decoder which produces the answer span.
+
+2.1 DOCUMENT AND QUESTION ENCODER: Let (xQ1 , x Q 2 , . . . , x Q n ) denote the sequence of word vectors corresponding to words in the question and (xD1 , x D 2 , . . . , x D m) denote the same for words in the document. Using an LSTM (Hochreiter
+& Schmidhuber, 1997), we encode the document as: dt = LSTMenc ( dt−1, x D t ) . We define the document encoding matrix as D = [d1 . . . dn d∅] ∈ R`×(m+1). We also add a sentinel vector d∅ (Merity et al., 2016), which we later show allows the model to not attend to any particular word in the input.
+The question embeddings are computed with the same LSTM to share representation power: qt = LSTMenc ( qt−1, x Q t ) . We define an intermediate question representation Q′ = [q1 . . . qm q∅] ∈
+R`×(n+1). To allow for variation between the question encoding space and the document encoding space, we introduce a non-linear projection layer on top of the question encoding. The final representation for the question becomes: Q = tanh ( W (Q)Q′ + b(Q) ) ∈ R`×(n+1).
+
+2.2 COATTENTION ENCODER: We propose a coattention mechanism that attends to the question and document simultaneously, similar to (Lu et al., 2016), and finally fuses both attention contexts. Figure 2 provides an illustration of the coattention encoder.
+We first compute the affinity matrix, which contains affinity scores corresponding to all pairs of document words and question words: L = D>Q ∈ R(m+1)×(n+1). The affinity matrix is normalized row-wise to produce the attention weights AQ across the document for each word in the question, and column-wise to produce the attention weights AD across the question for each word in the document:
+AQ = softmax (L) ∈ R(m+1)×(n+1) and AD = softmax ( L> ) ∈ R(n+1)×(m+1) (1)
+Next, we compute the summaries, or attention contexts, of the document in light of each word of the question.
+CQ = DAQ ∈ R`×(n+1). (2)
+We similarly compute the summaries QAD of the question in light of each word of the document. Similar to Cui et al. (2016), we also compute the summaries CQAD of the previous attention contexts in light of each word of the document. These two operations can be done in parallel, as is shown in Eq. 3. One possible interpretation for the operation CQAD is the mapping of question encoding into space of document encodings.
+CD = [ Q;CQ ] AD ∈ R2`×(m+1). (3)
+We define CD, a co-dependent representation of the question and document, as the coattention context. We use the notation [a; b] for concatenating the vectors a and b horizontally.
+The last step is the fusion of temporal information to the coattention context via a bidirectional LSTM: ut = Bi-LSTM ( ut−1, ut+1, [ dt; c D t ]) ∈ R2`. (4)
+We define U = [u1, . . . , um] ∈ R`×m , which provides a foundation for selecting which span may be the best possible answer, as the coattention encoding.
+
+2.3 DYNAMIC POINTING DECODER: Due to the nature of SQuAD, an intuitive method for producing the answer span is by predicting the start and end points of the span (Wang & Jiang, 2016). However, given a question-document pair, there may exist several intuitive answer spans within the document, each corresponding to a local maxima. We propose an iterative technique to select an answer span by alternating between predicting the start point and predicting the end point. This iterative procedure allows the model to recover from initial local maxima corresponding to incorrect answer spans.
+Figure 3 provides an illustration of the Dynamic Decoder, which is similar to a state machine whose state is maintained by an LSTM-based sequential model. During each iteration, the decoder updates its state taking into account the coattention encoding corresponding to current estimates of the start and end positions, and produces, via a multilayer neural network, new estimates of the start and end positions.
+Let hi, si, and ei denote the hidden state of the LSTM, the estimate of the position, and the estimate of the end position during iteration i. The LSTM state update is then described by Eq. 5.
+hi = LSTM dec ( hi−1, [ usi−1 ;uei−1 ]) (5)
+where usi−1 and uei−1 are the representations corresponding to the previous estimate of the start and end positions

@@ -1,0 +1,54 @@
+Write a review for the following paper.
+
+Abstract: In this paper we analyze the gate activation signals inside the gated recurrent neural networks, and find the temporal structure of such signals is highly correlated with the phoneme boundaries. This correlation is further verified by a set of experiments for phoneme segmentation, in which better results compared to standard approaches were obtained.
+
+1. Introduction: Deep learning has achieved great success in many areas [1][2][3]. For problems related to sequential data such as audio, video and text, significant improvements have been achieved by Gated Recurrent Neural Networks (GRNN), in which the hidden neurons form a directed cycle suitable for processing sequential data [4][5][6][7]. In addition to taking the neural network outputs to be used in the target applications, internal signals within the neural networks were also found useful. A good example is the bottleneck features [8][9].
+On the other hand, in the era of big data, huge quantities of unlabeled speech data are available but difficult to annotate, and unsupervised approaches to effectively extract useful information out of such unlabeled data are highly attractive [10][11]. Autoencoder structures have been used for extracting bottleneck features [12], while GRNN with various structures can be learned very well without labeled data. As one example, the outputs of GRNN learned in an unsupervised fashion have been shown to carry phoneme boundary information and used in phoneme segmentation [13][14].
+In this paper, we try to analyze the gate activation signals (GAS) in GRNN, which are internal signals within such networks. We found such signals have temporal structures highly related to the phoneme boundaries, which was further verified by phoneme segmentation experiments.
+
+2. Approaches: 
+
+2.1. Gate Activation Signals (GAS) for LSTM and GRU: Recurrent neural networks (RNN) are neural networks whose hidden neurons form a directed cycle. Given a sequence x = (x1, x2, ..., xT ), RNN updates its hidden state ht at time index t according to the current input xt and the previous hidden state ht−1. Gated recurrent neural networks (GRNN) achieved better performance than RNN by introducing gates in the units to control the information flow. Two popularly used gated units are LSTM and GRU [15][16].
+The signals within an LSTM recurrent unit are formulated as:
+ft = σ(Wfxt + Ufht−1 + bf ) (1)
+it = σ(Wixt + Uiht−1 + bi) (2)
+c̃t = tanh(Wcxt + Ucht−1 + bc) (3)
+ct = ftct−1 + itc̃t (4)
+ot = σ(Woxt + Uoht−1 + bo) (5)
+ht = ottanh(ct) (6)
+where ft, it, ot, ct, c̃t and ht are the signals over the forget gate, input gate, output gate, cell state, candidate cell state and hidden state at time t, respectively; σ(·) and tanh(·) are the sigmoid and hyperbolic tangent activation functions respectively; W? and U? are the weight matrices and b? are the biases.
+The GRU modulates the information flow inside the unit without a memory cell,
+ht = (1− zt)ht−1 + zth̃t (7)
+zt = σ(Wzxt + Uzht−1 + bz) (8)
+h̃t = tanh(Whxt + Uh(rt ht−1) + bh) (9)
+rt = σ(Wrxt + Urht−1 + br) (10)
+where zt, rt, ht and h̃t are the signals over the update gate, reset gate, hidden state and candidate hidden state at time t, respectively; means element-wise product [17].
+Here we wish to analyze the gate activations computed in equations (1), (2), (5), (8), (10) [18] and consider their temporal structures. For a GRNN layer consisting of J gated units, we view the activations for a specific gate at time step t as a vector gt with dimensionality J , called gate activation signals (GAS). Here gt can be ht, it, ot, zt or rt above. Figure 1 is the schematic plot showing how GAS may imply for a gate in an gated unit.
+ar X
+iv :1
+70 3.
+07 58
+8v 2
+[ cs
+.S D
+] 3
+1 A
+ug 2
+01 7
+
+2.2. Autoencoder GRNN: Autoencoders can be trained in an unsupervised way, and have been shown to be very useful for many applications [19]. We can have an autoencoder with GRNN as in Figure 2 called AEGRNN here. Given an input utterance represented by its acoustic feature sequence {x1, x2, ..., xT }, at each time step t, AEGRNN takes the input vector xt, and produces the output x̂t, the reconstruction of xt. Due to the recurrent structure, to generate x̂t, AE-GRNN actually considers all information up to xt in the sequence, x1, x2, ..., xt, or x̂t = AE-GRNN(x1, x2, ..., xt). The loss function L of AE-GRNN in (11) is the averaged squared `-2 norm for the reconstruction error of xt.
+L = N∑ n Tn∑ t 1 d ‖xnt − AE-GRNN(xn1 , xn2 , ..., xnt )‖2 (11)
+where the superscript n indicates the n-th training utterance with length Tn, andN is the number of utterances used in training. d indicates the number of dimensions of xnt .
+
+3. Initial Experiments and Analysis: 
+
+3.1. Experimental Setup: We conducted our initial experiments on TIMIT, including 4620 training utterances and 1680 testing utterances. The ground truth phoneme boundaries provided in TIMIT are used here. We train models on the training utterances, and perform analysis on the testing ones.
+In the AE-GRNN tested, both the encoder and the decoder consisted of a recurrent layer and a feed-forward layer. The recurrent layers consisted of 32 recurrent units, while the feedforward layers consisted of 64 neurons. We used ReLU as the activation function for the feed-forward layers [20]. The dropout rate was set to be 0.3 [21]. The networks were trained with Adam [22]. The acoustic features used were the MFCCs of 39-dim with utterance-wise cepstral mean and variance normalization (CMVN) applied.
+
+3.2. Initial Results and Observations: Figure 3 shows the means of the gate activation signals over all gated units in the encoder of AE-GRNN with respect to the frame index, taken from an example utterance. The upper three subfigures (a)(b)(c) are for LSTM gates, while the lower two (d)(e) for GRU gates. The temporal variations of GRU gates are similar to the forget gate of LSTM to some degree, and looks like the negative of the input gate of LSTM except for a level shift. More importantly, when compared with the phoneme boundaries shown as the blue dashed lines, a very strong correlation can be found. In other words, whenever the signal switches from a phoneme to the next across the phoneme boundary, the changes in signal characteristics are reflected in the gate activation signals. This is consistent to the previous finding that the sudden bursts of gate activations indicated that there were boundaries of phonemes in a speech synthesis task [23].
+
+3.3. Difference GAS: With the above observations, we define difference GAS as follows. For a GAS vector at time index t, gt, we compute its mean over all units to get a real value ḡt. We can then compute the difference GAS as the following:
+∆ḡt = ḡt+1 − ḡt (12)
+The difference GAS can also be evaluated for each individual gated unit for each dimension of the vector gt,
+∆ḡjt = ḡ j t+1 − ḡ j t (13)
+where gjt is the j-th component of the vector gt. We plotted the difference GAS and the individual difference GAS for the first 8 units in a GRNN over

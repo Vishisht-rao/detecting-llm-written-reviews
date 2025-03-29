@@ -1,0 +1,68 @@
+Write a review for the following paper.
+
+Abstract: A two–step Christoffel function based solution is proposed to distribution regression problem. On the first step, to model distribution of observations inside a bag, build Christoffel function for each bag of observations. Then, on the second step, build outcome variable Christoffel function, but use the bag’s Christoffel function value at given point as the weight for the bag’s outcome. The approach allows the result to be obtained in closed form and then to be evaluated numerically. While most of existing approaches minimize some kind an error between outcome and prediction, the proposed approach is conceptually different, because it uses Christoffel function for knowledge representation, what is conceptually equivalent working with probabilities only. To receive possible outcomes and their probabilities Gauss quadrature for second–step measure can be built, then the nodes give possible outcomes and normalized weights – outcome probabilities. A library providing numerically stable polynomial basis for these calculations is available, what make the proposed approach practical.
+
+Multiple–Instance Learning: Christoffel Function Approach to: 
+
+Distribution Regression Problem.: Vladislav Gennadievich Malyshkin∗
+Ioffe Institute, Politekhnicheskaya 26, St Petersburg, 194021, Russia
+(Dated: November, 19, 2015)
+$Id: DistReg.tex,v 1.53 2015/11/22 23:16:03 mal Exp $
+A two–step Christoffel function based solution is proposed to distribution regression
+problem. On the first step, to model distribution of observations inside a bag, build
+Christoffel function for each bag of observations. Then, on the second step, build
+outcome variable Christoffel function, but use the bag’s Christoffel function value
+at given point as the weight for the bag’s outcome. The approach allows the result
+to be obtained in closed form and then to be evaluated numerically. While most of
+existing approaches minimize some kind an error between outcome and prediction,
+the proposed approach is conceptually different, because it uses Christoffel function
+for knowledge representation, what is conceptually equivalent working with proba-
+bilities only. To receive possible outcomes and their probabilities Gauss quadrature
+for second–step measure can be built, then the nodes give possible outcomes and
+normalized weights – outcome probabilities. A library providing numerically stable
+polynomial basis for these calculations is available, what make the proposed approach
+practical.
+∗ malyshki@ton.ioffe.ru
+2 I. INTRODUCTION
+Multiple instance learning is an important Machine Learning (ML) concept having numerous applications[1]. In multiple instance learning class label is associated not with a single observation, but with a “bag” of observations. A very close problem is distribution regression problem, where a l-th sample distribution of x is mapped to a single y(l) value. There are numerous heuristics methods developed from both: ML and distribution regression sides, see [2] for review. As in any ML problem the most important part is not so much the learning algorithm, but the way how the learned knowledge is represented. Learned knowledge is often represented as a set of propositional rules, regression function, Neural Network weights, etc. Most of the approaches minimize an error between result and prediction, and some kind of L2 metric is often used as an error. The simplest example of such approach is least squares–type approximation. However, there is exist different kind of approximation, Radon–Nikodym type, that operates not with result error, but with sample probabilty, see the Ref. [3] as an example comparing two these approaches.
+Similar transition from result error to probability of outcomes is made in this paper. In this work we use Christoffel function as a mean to store knowledge learned. Christoffel function is a very fundamental concept related to “distribution density”, quadratures weights, number of observations, etc[4, 5]. Recent progress in numerical stability of high order distribution moments calculation[6] allows Christoffel function to be built to a very high order, what make practical the approach of using Christoffel function as way to represent knowledge learned.
+The paper is organized as following: In Section II a general theory of distribution regression is discussed and close form result, Eq. (10), is presented. Then in Section III numerical example of Eq. (10) application is presented. In Section IV possible further development is discussed.
+
+II. CHRISTOFFEL FUNCTION APPROACH: Consider distribution regression problem where a bag of N observations x is mapped to
+a single outcome observation y for l = [1..M ].
+(x1, x2, . . . , xj , . . . , xN) (l) → y(l) (1)
+3 A distribution regression problem can have a goal to estimate y, average of y, distribution of y, etc. given specific value of x. While the Christoffel function can be used as a proxy to probabilty estimation, but for “true” distribution estimation a complete Gauss quadrature should be built, then the nodes would give possible outcomes and normalized weights – outcome probabilities.
+For further development we need x and y bases Qk(x) and Qm(y) and some x and y measure. For simplicity, not reducing the generality of the approach, we are going to assume that x measure is a sum over j index ∑
+j, y measure is a ∑ l, the basis functions Qk(x) are
+polynomials k = 0..dx − 1, and Qm(y) are polynomials m = 0..dy − 1 where dx and dy is the number of elements in x and y bases, typical value for dx and dy is below 10–15.
+If no x observations exist in each bag (N = 0), how to estimate the number of observations
+for given y value? The answer is Christoffel function λ(y).
+Gy = < QsQt >y= M ∑
+l=1
+Qs(y (l))Qt(y (l)) (2)
+K(z, y) = dy−1 ∑
+s,t=0
+Qs(z) (Gy) −1 st Qt(y) (3)
+λ(y) = 1
+K(y, y) (4)
+The Gy is Gramm matrix, K(y, y) is a positive quadratic form with matrix equal to Gramm matrix inverse and is a polynomial of 2dy−2 order, when the form is expanded. The K(z, y) is a reproducing kernel: P (z) = ∑M
+l=1K(z, y (l))P (y(l)) for any polynomial P of degree dy − 1
+or less. For numerical calculations of K(y, y) see Ref. [6], Appendix C.
+The λ(y) define a value similar in nature to “the number of observations”, or “prob-
+ability”, “weight”, etc[4, 5]. (The equation M = ∑dy−1
+i=0 λ(yi) holds, when yi correspond
+to quadrature nodes build on y–distribution, the yi are eigenvalues of generalized eigenfunctions problem: ∑dy−1
+t=0 < yQsQt >y ψ (i) t = yi ∑dy−1 t=0 < QsQt >y ψ (i) t , also note that
+λ(yi) = 1/K(yi, yi) = 1/ ( ∑dy−1 t=0 ψ (i) t Qt(yi) )2 and 0 = ∑dy−1 t=0 ψ (s) t Qt(yi) for s 6= i. The asympthotic of λ(y) can also serve as important characteristics of distribution property[4].) The problem now is to modify λ(y) to take into account given x value. If, in addition to y(l), we have a vector x (l) j as precondition, then the weight in (2) for each l, should be no longer equal to the constant for all terms, but instead, should be calculated based on the number of x (l) j observations that are close to given x value. Let us use Christoffel function
+4 once again, but now in x–space under fixed l and estimate the weight for l-th observation of y as equal to λ(l)(x)
+The result for λ(y|x) is:
+< Qk > (l) x =
+N ∑
+j=1
+Qk(x (l) j ) (5)
+G(l) = < QqQr > (l) x =
+N ∑
+j=1
+Qq(x (l) j )Qr(x (l) j ) (6)
+λ(l)(x) = 1
+∑

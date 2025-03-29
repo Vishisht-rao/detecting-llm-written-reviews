@@ -1,0 +1,55 @@
+Write a review for the following paper.
+
+Abstract: In this work we show that the classification performance of high-dimensional structural MRI data with only a small set of training examples is improved by the usage of dimension reduction methods. We assessed two different dimension reduction variants: feature selection by ANOVA F-test and feature transformation by PCA. On the reduced datasets, we applied common learning algorithms using 5-fold crossvalidation. Training, tuning of the hyperparameters, as well as the performance evaluation of the classifiers was conducted using two different performance measures: Accuracy, and Receiver Operating Characteristic curve (AUC). Our hypothesis is supported by experimental results.
+
+1 Introduction: Machine learning algorithms are used in various fields for learning patterns from data and make predictions on unseen data. Unfortunately, the probability of overfitting of a learning algorithm increases with the number of features [14]. Dimension reduction methods are not only powerful tools to avoid overfitting [10], but also capable of making the training of high-dimensional data a computationally more feasible task. In this work, we want to study the influence of dimension reduction techniques on the performance of various well-known classification methods. Dimension reduction methods are categorized into two groups: feature selection and feature transformation.
+Feature selection methods [9, 6] aim to identify a subset of “meaning-ful” features out of the original set of features. They can be subdivided into filter, wrapper and embedded methods. Filter methods compute a score for each feature, and then select only the features that have the best scores. Wrapper methods train a predictive model on subsets of features, before the subset with the best score is selected. The search for subsets can be done either in a deterministic (e.g. forward selection, backward elimination) or random (i.e. genetic algorithms) way. Embedded methods determine the optimal subset of features directly by the trained weights of the classification method.
+In contrast to feature selection methods, feature transformation methods project the original high dimensional data into a lower dimensional space. Principal Component Analysis (PCA) is one of the most-known techniques in this category. PCA finds the principal axis in the dataset that explain most of the variance, without considering the class labels. Therefore we use PCA as the baseline for dimension reduction methods in this study.
+Among various feature selection methods, we limit our scope on filter methods, as they do not depend on a specific classification method and therefore are suitable for the comparison of different classifiers [9]. Comparative studies on text classification have revealed, that univariate statistical tests like the χ2-test
+ar X
+iv :1
+50 5.
+06 90
+7v 1
+[ cs
+.L G
+] 2
+6 M
+ay 2
+01 5
+and ANOVA F-test are among the most effective scores for filtered feature selection [15]. As the χ2-test is only applicable on categorical data, we use the filter selection method based on the ANOVA F-test which is applicable on continuous features used for the evaluation of this study.
+As part of the 17th International Conference on Medical Image Computing and Computer Assisted Intervention (MICCAI), the MICCAI 2014 Machine Learning Challenge (MLC) aims for the objective comparison of the latest machine learning algorithms applied on Structural MRI data [13]. The subtask of binary classification of clinical phenotypes is in particular challenging, since in the opinion of the challenge authors, a prediction accuracy of 0.6 is acceptable. Motivated by this challenge, the goal of this study is to show, that the selected dimension reduction methods improve the performances of various classifiers trained on a small set of high-dimensional Structural MRI data.
+The report is organized as follows. Section 2 describes the dimension reduction methods. Section 3 describes the classifiers. Section 4 describes the datasets, evaluation measures and the experiment methodology. Section 5 presents the results. Section 6 discusses the major findings. Section 7 summarizes the conclusion.
+
+2 Dimension reduction: In the following we will give an overview of the used techniques for dimension reduction.
+Filtered feature selection by ANOVA F-test Feature selection methods based on filtering determine the relevance of features by calculating a score (usually based on a statistical measure or test). Given a number of selected features s, only the s top-scoring features are afterwards forwarded to the classification algorithm. In this study, we use the ANOVA F-Test statistic [8] for the feature scoring. The F-test score assesses, if the expected values of a quantitative random variable x within a number of m predefined groups differ from each other. The F-value is defined as
+F = MSB MSW ,
+MSB reflects the “between-group variability”, expressed as MSB = ∑ i ni(x̄i − x̄)2
+m− 1 ,
+where ni is the number of observations in the i-th group, x̄i denotes the sample mean in the i-th group, and x̄ denotes the overall mean of the data. MSW refers to the “within-group variability’, defined as
+MSW = ∑ ij(xij − x̄i)2
+n−m ,
+where xij denotes the j-th observation in the i-th group. For the binary classification problem assessed in this report, the number of groups m = 2.
+Feature transformation by PCA PCA [7] reduces the dimension of the data by finding the first s orthogonal linear combinations of the original variables with the largest variance. PCA is defined in such a way that the first principal component has the largest possible variance. Each succeeding component in turn has the highest variance possible under the constraint that it is orthogonal to the preceding components.
+
+3 Classifiers: In the following we give a short description of each used classification methods in this study.
+k-Nearest Neighbors (k-NN) The k-NN classifier [2, p.125] does not train a specific model, but stores a labeled training set as “reference set”. The classification of a sample is then determined by the class with the most representatives among the k nearest neighbors of the sample in the reference set. Odd values of k prevent tie votes. Among other possible metrics, we use the Euclidean distance metric for this study.
+Gaussian Naive Bayes (GNB) Bayes classifiers are based on the Bayes’ theorem and depend on naive (strong) independence assumptions [16, 4]. Using Bayes’ theorem, the probability P (ωj | x) of some class ωw given a d-dimensional random feature vector x ∈ Rd can be expressed as the equation:
+P (ωj | x) = P (ωj)p(x | ωj)
+p(x) ,
+where P (ωj) denotes the prior probability of the j-th class ωj , p(x | ωj) refers to the class conditional probability density function for x given class ωj , and p(x) is the evidence factor used for scaling, which in the case of two classes is defined as
+p(x) = 2∑
+j=2 p(x | ωj)P (ωj).
+Under the naive assumption that all the individual components xi, i = 1, . . . , d of x are conditionally independent given the class, p(x | ωj) can be decomposed into the product p(x1 | ωj) . . . p(xd | ωj). Therefore we can rearrange P (ωj | x) as
+P (ωj | x) = P (ωj) ∏d i=1 p(xi | ωj) p(x) .
+Since p(x) is constant for a given input under the Bayes’ rule, the naive Bayes classifier predicts the class ωk that maximizes the following function:
+ωk = arg max j P (ωj) d∏ i=1 p(xi | ωj)
+Under the typical assumption that continuous values associated with each class are Gaussian distributed, the probability density of a component xi given a class ωj can be expressed as
+p(xi | ωj) = 1√
+2πσ2ij exp
+( − (xi − µij) 2
+2πσ2ij
+) ,
+where µij denotes the class conditional mean and σ2ij the class conditional variance. The corresponding classifier is called Gaussian Naive Bayes.
+Linear Discriminant Analysis (LDA) Given a two class problem, the LDA algorithm separates the projected mean of two classes maximally by a defined separating hyperplane, while minimizing the variance within each class [4, p. 117–124]. LDA is based on the assumption that both classes are normally distributed and share the same covariance matrix.
+Ridge The Ridge classifier is based on Ridge Regression, which extends the
