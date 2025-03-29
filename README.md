@@ -7,21 +7,21 @@ This repository contains the code and evaluation results for the paper "Detectin
 
 The repository is organized as follows:
 
-- **GCG/**: Contains code related to the implementation of the Gradient Coordinate Descent watermarking technique.
+- **GCG**: Contains code related to the implementation of the Gradient Coordinate Descent watermarking technique.
 
-- **Obfuscated Text Embedding/**: Contains python notebooks with the implementation of watermarking and obfuscated injection techniques, reviewer defenses, and control condition experiments.
+- **Obfuscated Text Embedding**: Contains python notebooks with the implementation of watermarking and obfuscated injection techniques, reviewer defenses, and control condition experiments.
 
-- **Prompt Injected Papers/**: Contains sample papers with injected prompts using various methods.
+- **Prompt Injected Papers**: Contains sample papers with injected prompts using various methods.
 
 - **Results**: Contains all evaluation results.
 
 Below are further details on each of the directories.
 
-### GCG
+## GCG
 
 Refer to the README file in the GCG directory for installation and usage.
 
-### Obfuscated Text Embedding
+## Obfuscated Text Embedding
 
 - The file "WM All9.ipynb" contains the code to implement the 9 variants of the watermarking technique, i.e. 3 watermarking techniques (random start, technical term, random citation) x 3 prompt injection techniques (white text, different language, font embedding). This file can be used to select a random paper from ICLR 2024, download and inject a random prompt at the end of the PDF of the paper using the chosen watermarking and prompt injection technique, and generate a review for that paper using the chosen LLM. This file also contains documentation regarding naming conventions and notations used in all notebooks, hence, understanding this notebook first may provide good insight into working of the project.
 
@@ -35,11 +35,11 @@ Refer to the README file in the GCG directory for installation and usage.
 
 - The file "WM PosReview.ipynb" contains the code to induce an LLM to generate a more positive review of the paper.
 
-### Prompt Injected Papers
+## Prompt Injected Papers
 
 This directory contains a sample paper of each of the different types of prompt injections studied.
 
-### Results
+## Results
 
 - The directory "ControlExperiments" contain metrics obtained when Algorithm 1 and Algorithm 2/3 were run on ICLR 2021 and ICLR 2024 reviews augmented with 100 reviews containing one of the chosen watermarks.
 
