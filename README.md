@@ -25,32 +25,32 @@ Refer to the README file in the GCG directory for installation and usage.
 
 - The file "WM All9.ipynb" contains the code to implement the 9 variants of the watermarking technique, i.e. 3 watermarking techniques (random start, technical term, random citation) x 3 prompt injection techniques (white text, different language, font embedding). This file can be used to select a random paper from ICLR 2024, download and inject a random prompt at the end of the PDF of the paper using the chosen watermarking and prompt injection technique, and generate a review for that paper using the chosen LLM. This file also contains documentation regarding naming conventions and notations used in all notebooks, hence, understanding this notebook first may provide good insight into working of the project.
 
-- The file "WM Control.ipynb" contains the implementations of the three algorithms in the paper in a control condition, i.e. reviews where our watermarks have not been embedded.
+- The file "WM Control.ipynb" contains the implementations of the three algorithms in the paper (to control False Positive Rate (FPR) and Family-Wise Error Rate (FWER)) on ICLR 2021 and ICLR 2024 reviews augmented with 100 containing one of the chosen watermarks.
 
 - The file "WM Grants.ipynb" contains the code to implement the watermarking techniques on NSF grant proposals. In essence, it is very similar to "WM All9.ipynb".
 
-- The file "WM Paraphrase.ipynb" contains the code for the paraphrasing reviewer defense.
+- The file "WM Paraphrase.ipynb" contains the code for the paraphrasing reviewer defense. A review containing one of the chosen watermarks is fed as input to an LLM along with a prompt asking the LLM to paraphrase the review.
 
-- The file "WM SusCheck.ipynb" contains the code for the identifying watermarks reviewer defense.
+- The file "WM SusCheck.ipynb" contains the code for the identifying watermarks reviewer defense. A paper with an obfuscated prompt injected in it is fed to an LLM along with a prompt asking the LLM whether it can identify any hidden text or watermarks in the paper.
 
 - The file "WM PosReview.ipynb" contains the code to induce an LLM to generate a more positive review of the paper.
 
 ## Prompt Injected Papers
 
-This directory contains a sample paper of each of the different types of prompt injections studied.
+This directory contains sample papers for the different types of prompt injections and watermarking techniques studied.
 
 ## Results
 
-- The directory "ControlExperiments" contain metrics obtained when Algorithm 1 and Algorithm 2/3 were run on ICLR 2021 and ICLR 2024 reviews augmented with 100 reviews containing one of the chosen watermarks.
+- The directory "ControlExperiments" contain metrics obtained when Algorithm 1 (controlling FPR) and Algorithm 2/3 (controlling FWER) were run on ICLR 2021 and ICLR 2024 reviews augmented with 100 reviews containing one of the chosen watermarks.
 
-- The directory "GrantProposals" contains the LLM-generated reviews for the three watermarking techniques.
+- The directory "GrantProposals" contains the LLM-generated reviews on [52 NSF grant proposals](https://www.ogrants.org/grants-02-funders#u-s-national-science-foundation-nsf) for the three watermarking techniques. ChatGPT 4o has been used to generate these reviews.
 
 - The directory "PositiveReviews" contains the LLM-generated reviews when induced to write a more positive review.
 
 - The directory "ReviewerDefenses" is structured as follows:
-  - "LastPageAttack" contains LLM-generated reviews for two types of watermarks discussed.
+  - "LastPageAttack" contains LLM-generated reviews for two types of watermarks (random start and random citation), where the watermarks have been inserted at the end of a page which is not the last page. 50 reviews are generated for each LLM.
   - "Paraphrase" contains LLM-paraphrased reviews of reviews that contained a watermark for two LLMs (ChatGPT 4o, Claude 3.5 Sonnet) for the three watermarking techniques.
-  - "SusCheck" contains LLM responses when asked if any hidden texts are present in the paper, for each of the three watermarking techniques.
+  - "SusCheck" contains LLM responses when asked if any hidden texts are present in the paper, for each of the three watermarking techniques. ChatGPT 4o has been used to generate these reviews.
 
-- The directory "Watermarking" contains LLM-generated reviews for five LLMs discussed in the paper, for different watermarking and prompt injection techniques as discussed in the paper.
+- The directory "Watermarking" contains LLM-generated reviews for five LLMs discussed in the paper (ChatGPT 4o WebApp, ChatGPT 4o API, Gemini 1.5 Pro, OpenAI o1-mini, Anthropic Claude 3.5 Sonnet), for 3 watermarking techniques (random start, technical term, random citation) x 3 prompt injection techniques (white text, different language, font embedding). 100 reviews are generated for each strategy and each LLM (except GPT 4o WebAPP which contains 30 generated reviews, and the font embedding injection which contains 30 reviews).
 
