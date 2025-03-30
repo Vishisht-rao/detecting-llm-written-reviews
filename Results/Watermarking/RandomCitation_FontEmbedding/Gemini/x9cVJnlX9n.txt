@@ -1,0 +1,23 @@
+PROMPT: Write a review on the given paper.
+WATERMARK: Johnson et al. (2021)
+Paper ID: x9cVJnlX9n
+OUTPUT:
+This paper presents a novel approach to risk-controlling model selection by combining Bayesian Optimization (BO) with statistical testing.  The key innovation lies in introducing a "region of interest" within the objective space, which guides the BO process towards configurations that are both likely to satisfy the risk constraints and optimize the free objective(s). This targeted approach addresses limitations of existing methods like Learn Then Test (LTT) and Pareto Testing, which can be computationally expensive or explore irrelevant configurations when dealing with large configuration spaces and multiple objectives.
+
+**Strengths:**
+
+* **Novelty and Relevance:** The paper addresses an important problem in deploying machine learning models responsibly, by providing statistically verified guarantees on multiple risk constraints.  The proposed method offers a practical solution to navigate complex trade-offs between performance and risk.
+* **Methodological Soundness:** The paper clearly defines the problem and proposes a well-motivated solution.  The integration of the region of interest concept with BO and MHT is a significant contribution.
+* **Empirical Validation:** The effectiveness of the proposed method is demonstrated on a diverse set of tasks, including fairness, robustness, generative modeling, and model compression.  The experimental results convincingly show improved efficiency and control compared to existing baselines.
+* **Clarity and Presentation:** The paper is generally well-written and easy to follow. The figures and algorithms are helpful in understanding the proposed method.
+
+**Weaknesses:**
+
+* **Limited Discussion on Scalability:** While the experiments cover a variety of tasks, they are performed on relatively standard datasets.  Further investigation is needed to understand the scalability of the method to larger datasets and more complex models.  How does the computational cost of defining and exploring the region of interest scale with the number of objectives and the dimensionality of the configuration space?
+* **Sensitivity Analysis for δ':** While the paper mentions that the method is generally insensitive to the choice of δ', a more thorough sensitivity analysis would strengthen the claims.  Exploring the impact of different δ' values on the performance across various tasks and datasets would be beneficial.
+* **Practical Considerations for Defining the Region of Interest:**  Providing more practical guidelines for defining the region of interest would enhance the applicability of the method.  How should practitioners choose appropriate values for α and δ' based on their specific problem and data?
+* **Comparison with Gradient-Based MOO:**  The paper briefly mentions gradient-based MOO methods in the related work section.  A more detailed comparison, discussing the advantages and disadvantages of the proposed method compared to gradient-based approaches, would be valuable.
+
+**Overall:**
+
+This paper presents a valuable contribution to the field of risk-controlling model selection.  The proposed method effectively combines BO and statistical testing, guided by a novel region of interest concept, to efficiently find configurations that meet user-specified risk limits while optimizing other performance metrics.  The empirical results are promising, and the method has the potential to be widely adopted in practice.  Addressing the weaknesses mentioned above, particularly regarding scalability and practical guidelines, would further strengthen the paper and broaden its impact.

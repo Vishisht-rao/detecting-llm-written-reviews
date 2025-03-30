@@ -1,0 +1,35 @@
+PROMPT: Write a review on the given paper.
+WATERMARK: This paper addresses the key issue
+Paper ID: WM5G2NWSYC
+OUTPUT:
+The paper "Projected Subnetworks Scale Adaptation" presents an interesting approach (SNP and SNP++) to continual learning, focusing on preserving zero/few-shot performance, which is a critical and often overlooked aspect.  The core idea of projecting task-specific representations as base parameters within a shared meta-parameter space using gradient-based meta-learning is novel and shows promise.
+
+**Strengths:**
+
+* **Novel Approach:** The projection of subnetworks as base parameters in a continuous space using meta-learning is a fresh perspective on continual learning. This enables manipulation of subnetworks (addition, removal, combination, switching) within a unified framework.
+* **Focus on Zero/Few-Shot:**  The paper explicitly addresses the important challenge of maintaining zero/few-shot capabilities in continual learning, a problem often neglected by existing methods.
+* **Empirical Results:** The experiments demonstrate improved performance compared to several baselines across multiple datasets, showcasing the effectiveness of SNP and SNP++ in preserving zero/few-shot performance and mitigating negative backward transfer.
+* **Clear Explanation:** The paper clearly explains the motivation, the proposed methods, and the experimental setup.
+
+
+**Weaknesses:**
+
+* **Limited Memory Analysis:** While the memory component in SNP++ is introduced, its impact isn't thoroughly analyzed.  A more in-depth analysis of memory usage and its effect on performance (especially with increasing tasks) would strengthen the paper. Exploring different memory management strategies would also be beneficial.
+* **Subnetwork Manipulation Complexity:** The paper briefly touches upon subnetwork manipulation (addition, removal, etc.), but lacks a detailed discussion of the practical implementation and computational cost of these operations.  Clearer guidelines and algorithms for these manipulations would make the method more accessible.
+* **Task Grouping Justification:** The paper mentions task groupings based on distance but could benefit from a more rigorous justification for these groupings and their implications for continual learning.
+* **Hyperparameter Sensitivity:**  The paper briefly analyzes the impact of some hyperparameters (β_base, β_meta), but a more comprehensive sensitivity analysis of other parameters would be helpful.
+* **Comparison to SOTA Continual Learners:**  The paper could benefit from comparisons to other state-of-the-art continual learning methods not specifically designed for large models or zero/few-shot learning.
+
+
+**Suggestions:**
+
+* **Expand on Memory Management:** Explore different memory mechanisms and analyze their effect on performance and scalability.
+* **Detailed Subnetwork Manipulation:** Provide detailed algorithms and complexity analysis for subnetwork manipulation operations.
+* **Further Justification of Task Grouping:** Elaborate on the rationale and implications of the observed task groupings.
+* **More Extensive Experimental Evaluation:**  Include more datasets and tasks, and compare with a broader range of continual learning methods.  Long-term performance over many tasks should be evaluated.
+* **Real-world Application:** Demonstrating the applicability of SNP and SNP++ on a real-world continual learning problem would further enhance the paper's impact.
+
+
+**Overall:**
+
+The paper presents a promising approach to continual learning with a focus on zero/few-shot performance. The core idea is innovative, and the empirical results are encouraging. Addressing the mentioned weaknesses, particularly regarding memory management and subnetwork manipulation, would significantly strengthen the paper and make it a more valuable contribution to the field.  The paper is definitely worthy of acceptance, but with the suggested revisions, it could have even greater impact.

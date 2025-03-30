@@ -1,0 +1,19 @@
+PROMPT: Write a review on the given paper.
+WATERMARK: This paper addresses the key issue
+Paper ID: lAhQCHuANV
+OUTPUT:
+This paper addresses a crucial yet often overlooked aspect of evaluating similarity scoring functions, particularly in face recognition: quantifying uncertainty.  While ROC curves are standard for assessing performance and fairness, the authors rightly point out that neglecting the uncertainty inherent in these empirical curves can lead to misleading conclusions, especially given the societal implications of face recognition technology.
+
+The key strength of the paper lies in its rigorous treatment of this uncertainty.  It correctly identifies that the naive bootstrap approach, commonly used for standard ROC analysis, fails in the similarity scoring context due to the U-statistic nature of false acceptance/rejection rates.  They propose a "recentered bootstrap" method to address this issue, providing theoretical guarantees for its asymptotic validity.  This methodological contribution is significant, offering a statistically sound way to construct confidence bands for similarity ROC curves and fairness metrics.
+
+The experimental validation is also well-executed.  Using real-world face recognition datasets and models, the authors demonstrate the practical relevance of their approach. The comparison of different fairness metrics in terms of their uncertainty is particularly insightful, highlighting the robustness of the max-geomean metric. The illustrative examples clearly show how ignoring uncertainty can lead to incorrect model selection based on seemingly superior but statistically insignificant performance differences.  The use of synthetic data to assess coverage probabilities further strengthens the empirical validation.
+
+While the paper is technically sound and makes valuable contributions, a few points could be improved:
+
+* **Clarity and Accessibility:** While the core ideas are presented clearly, the technical details can be dense.  Expanding the explanations of U-statistics and their implications for the bootstrap, perhaps with a more intuitive example, would benefit a broader audience.
+* **Computational Cost:** The recentered bootstrap involves repeated computations, which could be expensive for very large datasets.  A discussion of the computational complexity and potential strategies for optimization would be valuable.
+* **Practical Recommendations:** The paper focuses on methodology.  More explicit practical recommendations for practitioners, including guidelines on choosing appropriate FAR levels and interpreting uncertainty metrics, would enhance its impact.
+* **Beyond Face Recognition:** While the focus is on face recognition, the methodology is applicable to other similarity scoring tasks.  Briefly mentioning these broader applications would increase the paper's relevance.
+
+
+Overall, this paper makes a valuable contribution to the field of similarity scoring and fairness assessment.  The proposed recentered bootstrap method provides a much-needed tool for quantifying uncertainty in ROC analysis, enabling more robust and trustworthy evaluation of face recognition systems and beyond. Addressing the minor points mentioned above would further strengthen the paper's impact and accessibility.

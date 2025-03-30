@@ -1,0 +1,39 @@
+PROMPT: Write a review on the given paper.
+WATERMARK: This paper addresses the key topic
+Paper ID: Z0ojN315Uf
+OUTPUT:
+This paper addresses the key topic of differentially private principal component analysis (DP PCA) within the context of vertically partitioned data in federated learning (VFL). By filling a notable gap in the existing literature, the authors introduce SPCA, a novel algorithm that ensures differential privacy without relying on any trusted third party, thereby safeguarding against both server and client adversaries.
+
+### **Summary of Contributions**
+
+The primary contribution of this work is the development of SPCA, the first DP-PCA algorithm tailored for vertically partitioned data in federated learning environments. Unlike previous approaches that primarily focus on horizontally partitioned data, SPCA effectively handles attribute-wise data distribution among clients. The algorithm leverages Secure Multiparty Computation (MPC) protocols, specifically the BGW protocol, combined with the introduction of Skellam noise to achieve differential privacy. The authors provide a comprehensive theoretical analysis demonstrating that SPCA matches the privacy-utility trade-off of centralized DP-PCA methods. Empirical evaluations on real-world datasets further substantiate the effectiveness of SPCA, showcasing its superior performance over distributed baselines and its proximity to centralized DP benchmarks.
+
+### **Methodological Strengths**
+
+1. **Innovative Noise Mechanism**: The use of Skellam noise in conjunction with MPC is a novel approach that ensures privacy preservation without the need for a trusted aggregator. This method effectively distributes noise addition among clients, enhancing both server-observed and client-observed differential privacy guarantees.
+
+2. **Theoretical Rigor**: The paper presents a solid theoretical foundation, employing random matrix theory to establish that SPCA achieves optimal error rates akin to centralized DP-PCA. The derivation of Rényi Differential Privacy (RDP) guarantees and their conversion to $(\epsilon, \delta)$-DP further reinforce the robustness of the privacy guarantees.
+
+3. **Comprehensive Evaluation**: The experimental section is thorough, testing SPCA across multiple datasets with varying dimensions and privacy parameters. The consistent outperformance over distributed baselines and alignment with centralized DP results underscore the practical viability of the proposed method.
+
+### **Areas for Improvement**
+
+1. **Computational Complexity and Scalability**: While the theoretical aspects are well-addressed, the paper lacks a detailed analysis of the computational and communication overhead introduced by the MPC protocols. Practical deployment in large-scale federated settings may encounter significant latency and resource consumption, which should be empirically evaluated.
+
+2. **Assumptions and Threat Models**: The current work operates under a semi-honest threat model, assuming that all parties follow the protocol faithfully. Extending the framework to accommodate malicious clients, who may deviate from the protocol to infer sensitive information, would enhance the applicability and robustness of SPCA.
+
+3. **Choice of Discretization Parameter ($\gamma$)**: The discretization process is pivotal for balancing privacy and utility. However, the paper provides limited guidance on selecting the optimal $\gamma$ in diverse scenarios. A more detailed exploration or adaptive methods for choosing $\gamma$ based on dataset characteristics could improve usability.
+
+4. **Comparative Baselines**: The baseline used for comparison is primarily a distributed approach with additive Gaussian noise. Incorporating additional state-of-the-art DP-PCA methods for vertically partitioned data, if available, would provide a more comprehensive evaluation of SPCA's performance.
+
+5. **Experimental Diversity**: While the chosen datasets are relevant, incorporating a broader range of datasets, including those with varying levels of feature correlation and different scales, would offer a more nuanced understanding of SPCA's performance across different data distributions.
+
+6. **Extension to Other Models**: The extension to logistic regression is introduced but not thoroughly evaluated. Providing empirical results for logistic regression and potentially other machine learning models would demonstrate the versatility and broader applicability of the SPCA framework.
+
+### **Conclusion**
+
+Overall, this paper makes a significant advancement in the field of privacy-preserving federated learning by introducing SPCA, a robust and theoretically sound algorithm for DP-PCA in vertically partitioned data settings. The combination of MPC with innovative noise distribution mechanisms addresses critical privacy concerns without compromising utility. Despite some areas needing further exploration, particularly regarding scalability and comprehensive benchmarking, the contributions are substantial and lay a strong foundation for future research in privacy-preserving analytics within federated learning frameworks.
+
+---
+
+**Recommendation:** *Accept with minor revisions*. The paper presents a novel and well-justified approach to an important problem, with thorough theoretical and empirical support. Addressing the highlighted areas for improvement will enhance the robustness and applicability of the work.

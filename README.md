@@ -43,7 +43,9 @@ This directory contains sample papers for the different types of prompt injectio
 
 - The directory "ControlExperiments" contain metrics obtained when Algorithm 1 (controlling FPR) and Algorithm 2/3 (controlling FWER) were run on ICLR 2021 and ICLR 2024 reviews augmented with 100 reviews containing one of the chosen watermarks.
 
-- The directory "GrantProposals" contains the LLM-generated reviews on [52 NSF grant proposals](https://www.ogrants.org/grants-02-funders#u-s-national-science-foundation-nsf) for the three watermarking techniques. ChatGPT 4o has been used to generate these reviews.
+- The directory "GCGResults" contains the results from the GCG experiments. The GCG algorithm was run on 20 examples each from two datasets, International Congress on Peer Review and Scientific Publication (PRC) 2022 abstracts and PeerRead papers.
+
+- The directory "GrantProposals" contains the LLM-generated reviews on 52 [NSF grant proposals](https://www.ogrants.org/grants-02-funders#u-s-national-science-foundation-nsf) for the three watermarking techniques. ChatGPT 4o has been used to generate these reviews.
 
 - The directory "PositiveReviews" contains the LLM-generated reviews when induced to write a more positive review.
 
